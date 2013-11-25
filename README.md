@@ -17,44 +17,41 @@ Return true if provided code is octal digit.
 
 #### code.isWhiteSpace(code)
 
-Return true if provided code is white space. White space characters are formally defined in ECMA262 5.1.
+Return true if provided code is white space. White space characters are formally defined in ECMA262.
 
 #### code.isLineTerminator(code)
 
-Return true if provided code is line terminator. Line terminator characters are formally defined in ECMA262 5.1.
+Return true if provided code is line terminator. Line terminator characters are formally defined in ECMA262.
 
 #### code.isIdentifierStart(code)
 
-Return true if provided code can be the first character of ECMA262 5.1 Identifier. They are formally defined in ECMA262 5.1.
+Return true if provided code can be the first character of ECMA262 Identifier. They are formally defined in ECMA262.
 
 #### code.isIdentifierPart(code)
 
-Return true if provided code can be the trailing character of ECMA262 5.1 Identifier. They are formally defined in ECMA262 5.1.
+Return true if provided code can be the trailing character of ECMA262 Identifier. They are formally defined in ECMA262.
 
 ### keyword
 
-#### keyword.isFutureReservedWord(id)
+#### keyword.isKeywordES5(id, strict)
 
-Return true if provided identifier string is one of FutureReservedWords. They are formally defined in ECMA262 5.1.
+Return true if provided identifier string is one of Keywords in ECMA262 5.1. They are formally defined in ECMA262.
+If strict flag is true, this function additionally checks whether id is keyword under strict mode.
 
-#### keyword.isStrictModeReservedWord(id)
+#### keyword.isKeywordES6(id, strict)
 
-Return true if provided identifier string is reserved word only if evaluated under strict mode. They are formally defined in ECMA262 5.1.
-
-#### keyword.isKeyword(id, strict)
-
-Return true if provided identifier string is one of Keywords. They are formally defined in ECMA262 5.1.
-If strict flag is true, this function additionally checks whether id is keyword under strict mode by using `keyword.isStrictModeReservedWord`.
+Return true if provided identifier string is one of Keywords in ECMA262 6. They are formally defined in ECMA262.
+If strict flag is true, this function additionally checks whether id is keyword under strict mode.
 
 #### keyword.isRestrictedWord(id)
 
 Return true if provided identifier string is one of restricted words under strict mode: "eval" or "arguments".
-They are formally defined in ECMA262 5.1.
+They are formally defined in ECMA262.
 
 #### keyword.isIdentifierName(id)
 
 Return true if provided identifier string can be IdentifierName.
-They are formally defined in ECMA262 5.1.
+They are formally defined in ECMA262.
 
 ### License
 
