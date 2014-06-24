@@ -115,6 +115,7 @@ describe 'keyword', ->
             for word in words
                 expect(esutils.keyword.isKeywordES6(word, yes)).to.be.false
 
+
     describe 'isKeywordES5', ->
         it 'returns true if provided string is keyword under non-strict mode', ->
             for word in KW
@@ -156,6 +157,113 @@ describe 'keyword', ->
 
             for word in words
                 expect(esutils.keyword.isKeywordES5(word, yes)).to.be.false
+
+
+    describe 'isReservedWordES6', ->
+        it 'returns true for null/boolean values', ->
+            expect(esutils.keyword.isReservedWordES6('null', no)).to.be.true
+            expect(esutils.keyword.isReservedWordES6('null', yes)).to.be.true
+            expect(esutils.keyword.isReservedWordES6('true', no)).to.be.true
+            expect(esutils.keyword.isReservedWordES6('true', yes)).to.be.true
+            expect(esutils.keyword.isReservedWordES6('false', no)).to.be.true
+            expect(esutils.keyword.isReservedWordES6('false', yes)).to.be.true
+
+        # isReservedWordES6 has the same properties as isKeywordES6
+
+        it 'returns true if provided string is keyword under non-strict mode', ->
+            for word in KW
+                expect(esutils.keyword.isReservedWordES6(word, no)).to.be.true
+
+            expect(esutils.keyword.isReservedWordES6('yield', no)).to.be.true
+
+        it 'returns false if provided string is not keyword under non-strict mode', ->
+            words = [
+                'hello'
+                '20'
+                '$'
+                'ゆゆ式'
+            ]
+
+            for word in words
+                expect(esutils.keyword.isReservedWordES6(word, no)).to.be.false
+
+            for word in SRW
+                expect(esutils.keyword.isReservedWordES6(word, no)).to.be.false
+
+        it 'returns true if provided string is keyword under strict mode', ->
+            for word in KW
+                expect(esutils.keyword.isReservedWordES6(word, yes)).to.be.true
+
+            expect(esutils.keyword.isReservedWordES6('yield', yes)).to.be.true
+
+            for word in SRW
+                expect(esutils.keyword.isReservedWordES6(word, yes)).to.be.true
+
+
+        it 'returns false if provided string is not keyword under strict mode', ->
+            words = [
+                'hello'
+                '20'
+                '$'
+                'ゆゆ式'
+            ]
+
+            for word in words
+                expect(esutils.keyword.isReservedWordES6(word, yes)).to.be.false
+
+
+    describe 'isReservedWordES5', ->
+        it 'returns true for null/boolean values', ->
+            expect(esutils.keyword.isReservedWordES5('null', no)).to.be.true
+            expect(esutils.keyword.isReservedWordES5('null', yes)).to.be.true
+            expect(esutils.keyword.isReservedWordES5('true', no)).to.be.true
+            expect(esutils.keyword.isReservedWordES5('true', yes)).to.be.true
+            expect(esutils.keyword.isReservedWordES5('false', no)).to.be.true
+            expect(esutils.keyword.isReservedWordES5('false', yes)).to.be.true
+
+        # isReservedWordES5 has the same properties as isKeywordES5
+
+        it 'returns true if provided string is keyword under non-strict mode', ->
+            for word in KW
+                expect(esutils.keyword.isReservedWordES5(word, no)).to.be.true
+
+        it 'returns false if provided string is not keyword under non-strict mode', ->
+            words = [
+                'hello'
+                '20'
+                '$'
+                'ゆゆ式'
+            ]
+
+            for word in words
+                expect(esutils.keyword.isReservedWordES5(word, no)).to.be.false
+
+            for word in SRW
+                expect(esutils.keyword.isReservedWordES5(word, no)).to.be.false
+
+            expect(esutils.keyword.isReservedWordES5('yield', no)).to.be.false
+
+        it 'returns true if provided string is keyword under strict mode', ->
+            for word in KW
+                expect(esutils.keyword.isReservedWordES5(word, yes)).to.be.true
+
+            expect(esutils.keyword.isReservedWordES5('yield', yes)).to.be.true
+
+            for word in SRW
+                expect(esutils.keyword.isReservedWordES5(word, yes)).to.be.true
+
+
+        it 'returns false if provided string is not keyword under strict mode', ->
+            words = [
+                'hello'
+                '20'
+                '$'
+                'ゆゆ式'
+            ]
+
+            for word in words
+                expect(esutils.keyword.isReservedWordES5(word, yes)).to.be.false
+
 
     describe 'isRestrictedWord', ->
         it 'returns true if provided string is "eval" or "arguments"', ->
