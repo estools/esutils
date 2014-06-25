@@ -294,6 +294,7 @@ describe 'keyword', ->
                 '$20'
                 'hello20'
                 '_'
+                'if'
             ]
 
             for word in words
@@ -306,7 +307,88 @@ describe 'keyword', ->
                 '0$'
                 '-ゆゆ式'
                 '#_'
+                '_#'
             ]
 
             for word in words
                 expect(esutils.keyword.isIdentifierName(word)).to.be.false
+
+
+    describe 'isIdentifierES5', ->
+        it 'returns false if provided string is empty', ->
+            expect(esutils.keyword.isIdentifierES5('')).to.be.false
+
+        it 'returns true if provided string is Identifier', ->
+            words = [
+                'hello'
+                '$'
+                'ゆゆ式'
+                '$20'
+                'hello20'
+                '_'
+            ]
+
+            for word in words
+                expect(esutils.keyword.isIdentifierES5(word)).to.be.true
+
+            expect(esutils.keyword.isIdentifierES5('yield', no)).to.be.true
+            expect(esutils.keyword.isIdentifierES5('let', no)).to.be.true
+
+        it 'returns false if provided string is not Identifier', ->
+            words = [
+                '+hello'
+                '0$'
+                '-ゆゆ式'
+                '#_'
+                '_#'
+                'if'
+                'null'
+                'true'
+                'false'
+            ]
+
+            for word in words
+                expect(esutils.keyword.isIdentifierES5(word)).to.be.false
+
+            expect(esutils.keyword.isIdentifierES5('yield', yes)).to.be.false
+            expect(esutils.keyword.isIdentifierES5('let', yes)).to.be.false
+
+
+    describe 'isIdentifierES6', ->
+        it 'returns false if provided string is empty', ->
+            expect(esutils.keyword.isIdentifierES6('')).to.be.false
+
+        it 'returns true if provided string is Identifier', ->
+            words = [
+                'hello'
+                '$'
+                'ゆゆ式'
+                '$20'
+                'hello20'
+                '_'
+            ]
+
+            for word in words
+                expect(esutils.keyword.isIdentifierES6(word)).to.be.true
+
+            expect(esutils.keyword.isIdentifierES6('let', no)).to.be.true
+
+        it 'returns false if provided string is not Identifier', ->
+            words = [
+                '+hello'
+                '0$'
+                '-ゆゆ式'
+                '#_'
+                '_#'
+                'if'
+                'null'
+                'true'
+                'false'
+            ]
+
+            for word in words
+                expect(esutils.keyword.isIdentifierES6(word)).to.be.false
+
+            expect(esutils.keyword.isIdentifierES6('yield', no)).to.be.false
+            expect(esutils.keyword.isIdentifierES6('yield', yes)).to.be.false
+            expect(esutils.keyword.isIdentifierES6('let', yes)).to.be.false
