@@ -1,7 +1,31 @@
 esutils ([esutils](http://github.com/Constellation/esutils)) is
 utility box for ECMAScript language tools.
 
-### Functions
+### API
+
+### ast
+
+#### ast.isExpression(node)
+
+Returns true if `node` is an Expression as defined in ECMA262 edition 5.1 section
+[11](https://es5.github.io/#x11).
+
+#### ast.isStatement(node)
+
+Returns true if `node` is a Statement as defined in ECMA262 edition 5.1 section
+[12](https://es5.github.io/#x12).
+
+#### ast.isIterationStatement(node)
+
+Returns true if `node` is an IterationStatement as defined in ECMA262 edition
+5.1 section [12.6](https://es5.github.io/#x12.6).
+
+#### ast.isStatement(node)
+
+Returns true if `node` is a SourceElement as defined in ECMA262 edition 5.1
+section [14](https://es5.github.io/#x14).
+
+### code
 
 #### code.isDecimalDigit(code)
 
