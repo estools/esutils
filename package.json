@@ -10,6 +10,11 @@
   "directories": {
     "lib": "./lib"
   },
+  "files": [
+    "LICENSE.BSD",
+    "README.md",
+    "lib"
+  ],
   "maintainers": [
     {
       "name": "Yusuke Suzuki",
