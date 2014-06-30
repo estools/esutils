@@ -1,3 +1,4 @@
+### esutils [![Build Status](https://secure.travis-ci.org/Constellation/esutils.svg)](http://travis-ci.org/Constellation/esutils)
 esutils ([esutils](http://github.com/Constellation/esutils)) is
 utility box for ECMAScript language tools.
 
