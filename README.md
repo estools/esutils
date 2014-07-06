@@ -21,7 +21,7 @@ Returns true if `node` is a Statement as defined in ECMA262 edition 5.1 section
 Returns true if `node` is an IterationStatement as defined in ECMA262 edition
 5.1 section [12.6](https://es5.github.io/#x12.6).
 
-#### ast.isStatement(node)
+#### ast.isSourceElement(node)
 
 Returns true if `node` is a SourceElement as defined in ECMA262 edition 5.1
 section [14](https://es5.github.io/#x14).
