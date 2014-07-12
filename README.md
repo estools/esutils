@@ -26,6 +26,15 @@ Returns true if `node` is an IterationStatement as defined in ECMA262 edition
 Returns true if `node` is a SourceElement as defined in ECMA262 edition 5.1
 section [14](https://es5.github.io/#x14).
 
+#### ast.trailingStatement(node)
+
+Returns `Statement?` if `node` has trailing `Statement`.
+```js
+if (cond)
+    consequent;
+```
+When taking this `IfStatement`, returns `consequent;` statement.
+
 ### code
 
 #### code.isDecimalDigit(code)
