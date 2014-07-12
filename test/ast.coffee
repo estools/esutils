@@ -25,6 +25,8 @@
 expect = require('chai').expect
 esutils = require '../'
 
+EMPTY = {type: 'EmptyStatement'}
+
 describe 'ast', ->
     describe 'isExpression', ->
         it 'returns false if input is not node', ->
@@ -101,16 +103,73 @@ describe 'ast', ->
 
     describe 'trailingStatement', ->
         it 'returns trailing statement if node has it', ->
-            target = {type: 'EmptyStatement'}
-            expect(esutils.ast.trailingStatement({type: 'WhileStatement', body: target})).to.be.eq target
-            expect(esutils.ast.trailingStatement({type: 'WithStatement', body: target})).to.be.eq target
-            expect(esutils.ast.trailingStatement({type: 'ForStatement', body: target})).to.be.eq target
-            expect(esutils.ast.trailingStatement({type: 'ForInStatement', body: target})).to.be.eq target
-            expect(esutils.ast.trailingStatement({type: 'IfStatement', consequent: target})).to.be.eq target
-            expect(esutils.ast.trailingStatement({type: 'IfStatement', consequent: {type:'EmptyStatement'}, alternate: target})).to.be.eq target
-            expect(esutils.ast.trailingStatement({type: 'LabeledStatement', body: target})).to.be.eq target
+            expect(esutils.ast.trailingStatement({type: 'WhileStatement', body: EMPTY})).to.be.eq EMPTY
+            expect(esutils.ast.trailingStatement({type: 'WithStatement', body: EMPTY})).to.be.eq EMPTY
+            expect(esutils.ast.trailingStatement({type: 'ForStatement', body: EMPTY})).to.be.eq EMPTY
+            expect(esutils.ast.trailingStatement({type: 'ForInStatement', body: EMPTY})).to.be.eq EMPTY
+            expect(esutils.ast.trailingStatement({type: 'IfStatement', consequent: EMPTY})).to.be.eq EMPTY
+            expect(esutils.ast.trailingStatement({type: 'IfStatement', consequent: {type:'EmptyStatement'}, alternate: EMPTY})).to.be.eq EMPTY
+            expect(esutils.ast.trailingStatement({type: 'LabeledStatement', body: EMPTY})).to.be.eq EMPTY
 
         it 'returns null if node doens\'t have trailing statement', ->
-            target = {type: 'EmptyStatement'}
-            expect(esutils.ast.trailingStatement({type: 'DoWhileStatement', body: target})).to.be.null
+            expect(esutils.ast.trailingStatement({type: 'DoWhileStatement', body: EMPTY})).to.be.null
             expect(esutils.ast.trailingStatement({type: 'ReturnStatement' })).to.be.null
+
+    describe 'isProblematicIfStatement', ->
+        it 'returns true if node is problematic if statement', ->
+            expect(esutils.ast.isProblematicIfStatement(
+                type: 'IfStatement'
+                consequent: {
+                    type: 'IfStatement'
+                    consequent: EMPTY
+                }
+                alternate: EMPTY
+            )).to.be.true
+
+            expect(esutils.ast.isProblematicIfStatement(
+                type: 'IfStatement'
+                consequent:
+                    type: 'LabeledStatement'
+                    body:
+                        type: 'IfStatement'
+                        consequent: EMPTY
+                alternate: EMPTY
+            )).to.be.true
+
+            expect(esutils.ast.isProblematicIfStatement(
+                type: 'IfStatement'
+                consequent:
+                    type: 'WithStatement'
+                    body:
+                        type: 'IfStatement'
+                        consequent: EMPTY
+                alternate: EMPTY
+            )).to.be.true
+
+        it 'returns false if node is not problematic if statement', ->
+            expect(esutils.ast.isProblematicIfStatement(
+                type: 'IfStatement'
+                consequent: EMPTY
+                alternate: EMPTY
+            )).to.be.false
+
+            expect(esutils.ast.isProblematicIfStatement(
+                type: 'IfStatement'
+                consequent:
+                    type: 'BlockStatement'
+                    body: [
+                        type: 'IfStatement'
+                        consequent: EMPTY
+                    ]
+                alternate: EMPTY
+            )).to.be.false
+
+            expect(esutils.ast.isProblematicIfStatement(
+                type: 'IfStatement'
+                consequent:
+                    type: 'DoWhileStatement'
+                    body:
+                        type: 'IfStatement'
+                        consequent: EMPTY
+                alternate: EMPTY
+            )).to.be.false

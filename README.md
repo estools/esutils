@@ -35,6 +35,25 @@ if (cond)
 ```
 When taking this `IfStatement`, returns `consequent;` statement.
 
+#### ast.isProblematicIfStatement(node)
+
+Returns true if `node` is a problematic IfStatement. If `node` is a problematic `IfStatement`, `node` cannot be represented as an one on one JavaScript code.
+```js
+{
+    type: 'IfStatement',
+    consequent: {
+        type: 'WithStatement',
+        body: {
+            type: 'IfStatement',
+            consequent: {type: 'EmptyStatement'}
+        }
+    },
+    alternate: {type: 'EmptyStatement'}
+}
+```
+The above node cannot be represented as a JavaScript code, since the top level `else` alternate belongs to an inner `IfStatement`.
+
+
 ### code
 
 #### code.isDecimalDigit(code)
