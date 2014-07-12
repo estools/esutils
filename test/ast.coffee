@@ -98,3 +98,19 @@ describe 'ast', ->
         it 'returns false if provided node is not source element', ->
             expect(esutils.ast.isSourceElement({type: "ThisExpression"})).to.be.false
             expect(esutils.ast.isSourceElement({type: "Program"})).to.be.false
+
+    describe 'trailingStatement', ->
+        it 'returns trailing statement if node has it', ->
+            target = {type: 'EmptyStatement'}
+            expect(esutils.ast.trailingStatement({type: 'WhileStatement', body: target})).to.be.eq target
+            expect(esutils.ast.trailingStatement({type: 'WithStatement', body: target})).to.be.eq target
+            expect(esutils.ast.trailingStatement({type: 'ForStatement', body: target})).to.be.eq target
+            expect(esutils.ast.trailingStatement({type: 'ForInStatement', body: target})).to.be.eq target
+            expect(esutils.ast.trailingStatement({type: 'IfStatement', consequent: target})).to.be.eq target
+            expect(esutils.ast.trailingStatement({type: 'IfStatement', consequent: {type:'EmptyStatement'}, alternate: target})).to.be.eq target
+            expect(esutils.ast.trailingStatement({type: 'LabeledStatement', body: target})).to.be.eq target
+
+        it 'returns null if node doens\'t have trailing statement', ->
+            target = {type: 'EmptyStatement'}
+            expect(esutils.ast.trailingStatement({type: 'DoWhileStatement', body: target})).to.be.null
+            expect(esutils.ast.trailingStatement({type: 'ReturnStatement' })).to.be.null
