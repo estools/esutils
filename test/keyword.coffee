@@ -284,7 +284,8 @@ describe 'keyword', ->
 
     describe 'isIdentifierName', ->
         it 'returns false if provided string is empty', ->
-            expect(esutils.keyword.isIdentifierName('')).to.be.false
+            expect(esutils.keyword.isIdentifierNameES5('')).to.be.false
+            expect(esutils.keyword.isIdentifierNameES6('')).to.be.false
 
         it 'returns true if provided string is IdentifierName', ->
             words = [
@@ -298,7 +299,8 @@ describe 'keyword', ->
             ]
 
             for word in words
-                expect(esutils.keyword.isIdentifierName(word)).to.be.true
+                expect(esutils.keyword.isIdentifierNameES5(word)).to.be.true
+                expect(esutils.keyword.isIdentifierNameES6(word)).to.be.true
 
 
         it 'returns false if provided string is not IdentifierName', ->
@@ -311,7 +313,11 @@ describe 'keyword', ->
             ]
 
             for word in words
-                expect(esutils.keyword.isIdentifierName(word)).to.be.false
+                expect(esutils.keyword.isIdentifierNameES5(word)).to.be.false
+                expect(esutils.keyword.isIdentifierNameES6(word)).to.be.false
+
+        it 'supports astral symbols', ->
+            expect(esutils.keyword.isIdentifierNameES6('x\uDB40\uDDD5')).to.be.true
 
 
     describe 'isIdentifierES5', ->

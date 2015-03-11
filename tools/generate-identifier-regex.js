@@ -1,16 +1,17 @@
 // Based on https://gist.github.com/mathiasbynens/6334847 by @mathias
+'use strict';
 
 var regenerate = require('regenerate');
 
 // Which Unicode version should be used?
-var version = '6.3.0'; // note: also update `package.json` when this changes
+var version = '7.0.0';
 
-// Shorthand function
+// Set up a shorthand function to import Unicode data.
 var get = function(what) {
     return require('unicode-' + version + '/' + what + '/code-points');
 };
 
-// Unicode categories needed to construct the ES5 regex
+// Get the Unicode categories needed to construct the ES5 regex.
 var Lu = get('categories/Lu');
 var Ll = get('categories/Ll');
 var Lt = get('categories/Lt');
@@ -22,9 +23,9 @@ var Mc = get('categories/Mc');
 var Nd = get('categories/Nd');
 var Pc = get('categories/Pc');
 
-var generateES5Regex = function() { // ES 5.1
+var es5regexes = (function() { // ES 5.1
     // http://mathiasbynens.be/notes/javascript-identifiers#valid-identifier-names
-    var identifierStart = regenerate('$', '_')
+    var identifierStart = regenerate()
         .add(Lu, Ll, Lt, Lm, Lo, Nl)
         .removeRange(0x010000, 0x10FFFF) // remove astral symbols
         .removeRange(0x0, 0x7F); // remove ASCII symbols (esutils-specific)
@@ -34,19 +35,53 @@ var generateES5Regex = function() { // ES 5.1
         .removeRange(0x010000, 0x10FFFF) // remove astral symbols
         .removeRange(0x0, 0x7F); // remove ASCII symbols (esutils-specific)
     return {
-        'NonAsciiIdentifierStart': identifierStart.toString(),
-        'NonAsciiIdentifierPart': identifierPart.toString()
+        'NonAsciiIdentifierStart': '/' + identifierStart + '/',
+        'NonAsciiIdentifierPart': '/' + identifierPart + '/',
     };
-};
+}());
 
-var result = generateES5Regex();
+// Get the Unicode properties needed to construct the ES6 regex.
+var ID_Start = get('properties/ID_Start');
+var ID_Continue = get('properties/ID_Continue');
+var Other_ID_Start = get('properties/Other_ID_Start');
+
+var es6regexes = (function() {
+    // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-identifier-names-static-semantics-early-errors
+    // http://unicode.org/reports/tr31/#Default_Identifier_Syntax
+    // https://bugs.ecmascript.org/show_bug.cgi?id=2717#c0
+    var identifierStart = regenerate(ID_Start)
+        // Note: this already includes `Other_ID_Start`. http://git.io/wRCAfQ
+        .removeRange(0x0, 0x7F); // remove ASCII symbols (esutils-specific)
+    var identifierPart = regenerate(ID_Continue)
+        // Note: `ID_Continue` already includes `Other_ID_Continue`. http://git.io/wRCAfQ
+        .add(Other_ID_Start)
+        .add('\u200C', '\u200D')
+        .removeRange(0x0, 0x7F); // remove ASCII symbols (esutils-specific)
+
+    return {
+        'NonAsciiIdentifierStart': '/' + identifierStart + '/',
+        'NonAsciiIdentifierPart': '/' + identifierPart + '/',
+    };
+}());
+
 console.log(
-    '// ECMAScript 5.1/Unicode v%s NonAsciiIdentifierStart:\n\n%s\n',
+    '// ECMAScript 5.1/Unicode v%s NonAsciiIdentifierStart:\n%s\n',
     version,
-    result.NonAsciiIdentifierStart
+    es5regexes.NonAsciiIdentifierStart
 );
 console.log(
-    '// ECMAScript 5.1/Unicode v%s NonAsciiIdentifierPart:\n\n%s',
+    '// ECMAScript 5.1/Unicode v%s NonAsciiIdentifierPart:\n%s\n',
     version,
-    result.NonAsciiIdentifierPart
+    es5regexes.NonAsciiIdentifierPart
+);
+
+console.log(
+    '// ECMAScript 6/Unicode v%s NonAsciiIdentifierStart:\n%s\n',
+    version,
+    es6regexes.NonAsciiIdentifierStart
+);
+console.log(
+    '// ECMAScript 6/Unicode v%s NonAsciiIdentifierPart:\n%s',
+    version,
+    es6regexes.NonAsciiIdentifierPart
 );
