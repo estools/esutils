@@ -133,35 +133,51 @@ describe 'code', ->
             for code in ['A'.charCodeAt(0)..'Z'.charCodeAt(0)]
                 expect(esutils.code.isLineTerminator(code)).to.be.false
 
-    describe 'isIdentifierStart', ->
-        it 'returns true if provided code can be a start of Identifier', ->
-            characters = [
-                'a'
-                '$'
-                '_'
-                'ゆ'
-            ]
+    describe 'isIdentifierStartES5', ->
+        it 'returns true if provided code can be a start of Identifier in ES5', ->
+            characters = ['a', '_', '$', 'ゆ']
             for code in characters.map((ch) -> ch.charCodeAt(0))
-                expect(esutils.code.isIdentifierStart(code)).to.be.true
+                expect(esutils.code.isIdentifierStartES5(code)).to.be.true
 
-        it 'returns false if provided code cannot be a start of Identifier', ->
+        it 'returns false if provided code cannot be a start of Identifier in ES5', ->
             for ch in [0..9]
-                expect(esutils.code.isIdentifierStart((ch + '').charCodeAt(0))).to.be.false
+                expect(esutils.code.isIdentifierStartES5((ch + '').charCodeAt(0))).to.be.false
 
-    describe 'isIdentifierPart', ->
-        it 'returns true if provided code can be a part of Identifier', ->
-            characters = [
-                'a'
-                '_'
-                '$'
-                'ゆ'
-            ]
+    describe 'isIdentifierPartES5', ->
+        it 'returns true if provided code can be a part of Identifier in ES5', ->
+            characters = ['a', '_', '$', 'ゆ']
             for code in characters.map((ch) -> ch.charCodeAt(0))
-                expect(esutils.code.isIdentifierPart(code)).to.be.true
+                expect(esutils.code.isIdentifierPartES5(code)).to.be.true
 
             for ch in [0..9]
-                expect(esutils.code.isIdentifierPart((ch + '').charCodeAt(0))).to.be.true
+                expect(esutils.code.isIdentifierPartES5((ch + '').charCodeAt(0))).to.be.true
 
-        it 'returns false if provided code cannot be a part of Identifier', ->
-            expect(esutils.code.isIdentifierPart('+'.charCodeAt(0))).to.be.false
-            expect(esutils.code.isIdentifierPart('-'.charCodeAt(0))).to.be.false
+        it 'returns false if provided code cannot be a part of Identifier in ES5', ->
+            expect(esutils.code.isIdentifierPartES5('+'.charCodeAt(0))).to.be.false
+            expect(esutils.code.isIdentifierPartES5('-'.charCodeAt(0))).to.be.false
+
+    describe 'isIdentifierStartES6', ->
+        it 'returns true if provided code can be a start of Identifier in ES6', ->
+            characters = ['a', '_', '$', 'ゆ']
+            for code in characters.map((ch) -> ch.charCodeAt(0))
+                expect(esutils.code.isIdentifierStartES6(code)).to.be.true
+
+        it 'returns false if provided code cannot be a start of Identifier in ES6', ->
+            for ch in [0..9]
+                expect(esutils.code.isIdentifierStartES6((ch + '').charCodeAt(0))).to.be.false
+
+    describe 'isIdentifierPartES6', ->
+        it 'returns true if provided code can be a part of Identifier in ES6', ->
+            characters = ['a', '_', '$', 'ゆ']
+            for code in characters.map((ch) -> ch.charCodeAt(0))
+                expect(esutils.code.isIdentifierPartES6(code)).to.be.true
+
+            for ch in [0..9]
+                expect(esutils.code.isIdentifierPartES6((ch + '').charCodeAt(0))).to.be.true
+
+        it 'supports astral symbols', ->
+            expect(esutils.code.isIdentifierPartES6(0xE01D5)).to.be.true
+
+        it 'returns false if provided code cannot be a part of Identifier in ES6', ->
+            expect(esutils.code.isIdentifierPartES6('+'.charCodeAt(0))).to.be.false
+            expect(esutils.code.isIdentifierPartES6('-'.charCodeAt(0))).to.be.false
