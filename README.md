@@ -58,6 +58,14 @@ The above node cannot be represented as a JavaScript code, since the top level `
 Returns true if `node` is a FunctionDefinition or FunctionExpression as defined in ECMA262 edition 5.1 section
 [13](https://es5.github.io/#x13).
 
+#### ast.isNamedFunction(node)
+
+Returns true if `node` is a FunctionDefinition or FunctionExpression with a non-null identifier
+
+#### ast.isAnonymousFunction(node)
+
+Returns true if `node` is a FunctionDefinition or FunctionExpression with a null identifier
+
 ### code
 
 #### code.isDecimalDigit(code)
