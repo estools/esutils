@@ -179,6 +179,8 @@ describe 'ast', ->
             expect(esutils.ast.isFunction({type: 'FunctionExpression'})).to.be.true
         it 'returns true for a function declaration', ->
             expect(esutils.ast.isFunction({type: 'FunctionDeclaration'})).to.be.true
+        it 'returns true for arrow functions', ->
+            expect(esutils.ast.isFunction({type: 'ArrowFunctionExpression'})).to.be.true
         it 'returns false for any other node type', ->
             expect(esutils.ast.isFunction({type: 'ExpressionStatement'})).to.be.false
 
