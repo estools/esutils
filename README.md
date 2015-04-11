@@ -123,10 +123,15 @@ Returns `true` if provided identifier string is one of `eval` or `arguments`.
 They are restricted in strict mode code throughout ECMA262 edition 5.1 and
 in ECMA262 edition 6 section [12.1.1](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-identifiers-static-semantics-early-errors).
 
-#### keyword.isIdentifierName(id)
+#### keyword.isIdentifierNameES5(id)
 
 Return true if provided identifier string is an IdentifierName as specified in
 ECMA262 edition 5.1 section [7.6](https://es5.github.io/#x7.6).
+
+#### keyword.isIdentifierNameES6(id)
+
+Return true if provided identifier string is an IdentifierName as specified in
+ECMA262 edition 6 section [11.6](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-names-and-keywords).
 
 #### keyword.isIdentifierES5(id, strict)
 
