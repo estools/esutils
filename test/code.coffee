@@ -158,7 +158,7 @@ describe 'code', ->
 
     describe 'isIdentifierStartES6', ->
         it 'returns true if provided code can be a start of Identifier in ES6', ->
-            characters = ['a', '_', '$', 'ゆ']
+            characters = ['a', '_', '$', 'ゆ', '\u0AF9']
             for code in characters.map((ch) -> ch.charCodeAt(0))
                 expect(esutils.code.isIdentifierStartES6(code)).to.be.true
 
