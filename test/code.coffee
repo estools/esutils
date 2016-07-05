@@ -83,7 +83,6 @@ describe 'code', ->
 
                 # Zs
                 0x1680
-                0x180E
                 0x2000
                 0x2001
                 0x2002
@@ -101,6 +100,8 @@ describe 'code', ->
             ]
             for code in codes
                 expect(esutils.code.isWhiteSpace(code)).to.be.true
+
+            expect(esutils.code.isWhiteSpace(0x180E)).to.be.false
 
         it 'returns false if provided code is not white space', ->
             for ch in [0..9]
