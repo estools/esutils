@@ -46,6 +46,7 @@ KW = [
     'const'
     'class'
     'super'
+    'await'
     'return'
     'typeof'
     'delete'
