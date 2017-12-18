@@ -64,24 +64,27 @@ const es6regexes = (function() {
     };
 }());
 
-console.log(
-    '// ECMAScript 5.1/Unicode v%s NonAsciiIdentifierStart:\n%s\n',
-    version,
-    es5regexes.NonAsciiIdentifierStart
-);
-console.log(
-    '// ECMAScript 5.1/Unicode v%s NonAsciiIdentifierPart:\n%s\n',
-    version,
-    es5regexes.NonAsciiIdentifierPart
-);
 
-console.log(
-    '// ECMAScript 6/Unicode v%s NonAsciiIdentifierStart:\n%s\n',
-    version,
-    es6regexes.NonAsciiIdentifierStart
-);
-console.log(
-    '// ECMAScript 6/Unicode v%s NonAsciiIdentifierPart:\n%s',
-    version,
-    es6regexes.NonAsciiIdentifierPart
-);
+// update the file carrying these regexes:
+var fs = require('fs');
+
+var src = fs.readFileSync(__dirname + '/../lib/code.js', 'utf8');
+var dst = src.replace(/[\r\n\s]+\/\/\s*See \`tools\/generate-identifier-regex\.js[^]+?ES6Regex[^]+?\};[\r\n\s]*?[\r\n]+/, `
+
+    // See \`tools/generate-identifier-regex.js\`. (\`ES5Regex\` and \`ES6Regex\` declarations are generated.)
+    ES5Regex = {
+        // ECMAScript 5.1/Unicode v${version} NonAsciiIdentifierStart:
+        NonAsciiIdentifierStart: ${es5regexes.NonAsciiIdentifierStart},
+        // ECMAScript 5.1/Unicode v${version} NonAsciiIdentifierPart:
+        NonAsciiIdentifierPart: ${es5regexes.NonAsciiIdentifierPart}
+    };
+
+    ES6Regex = {
+        // ECMAScript 6/Unicode v${version} NonAsciiIdentifierStart:
+        NonAsciiIdentifierStart: ${es6regexes.NonAsciiIdentifierStart},
+        // ECMAScript 6/Unicode v${version} NonAsciiIdentifierPart:
+        NonAsciiIdentifierPart: ${es6regexes.NonAsciiIdentifierPart}
+    };
+
+`);
+fs.writeFileSync(__dirname + '/../lib/code.js', dst, 'utf8');
