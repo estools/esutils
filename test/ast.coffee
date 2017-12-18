@@ -173,3 +173,45 @@ describe 'ast', ->
                         consequent: EMPTY
                 alternate: EMPTY
             )).to.be.false
+
+    describe 'isFunction', ->
+        it 'returns true for a function expression', ->
+            expect(esutils.ast.isFunction({type: 'FunctionExpression'})).to.be.true
+        it 'returns true for a function declaration', ->
+            expect(esutils.ast.isFunction({type: 'FunctionDeclaration'})).to.be.true
+        it 'returns true for arrow functions', ->
+            expect(esutils.ast.isFunction({type: 'ArrowFunctionExpression'})).to.be.true
+        it 'returns false for any other node type', ->
+            expect(esutils.ast.isFunction({type: 'ExpressionStatement'})).to.be.false
+
+    describe 'isNamedFuction', ->
+        it 'returns true for a named function expression', ->
+            expect(esutils.ast.isNamedFunction(
+                type: 'FunctionExpression'
+                id:
+                    type: 'Identifier',
+                    name: 'b'
+            )).to.be.true
+        it 'returns false for an anonymous function', ->
+            expect(esutils.ast.isNamedFunction(
+                type: 'FunctionExpression'
+                id: null
+            )).to.be.false
+        it 'returns false for any other node type', ->
+            expect(esutils.ast.isNamedFunction({type: "ExpressionStatement"})).to.be.false
+
+    describe 'isAnonymousFunction', ->
+        it 'returns false for a named function expression', ->
+            expect(esutils.ast.isAnonymousFunction(
+                type: 'FunctionExpression'
+                id:
+                    type: 'Identifier',
+                    name: 'b'
+            )).to.be.false
+        it 'returns true for an anonymous function', ->
+            expect(esutils.ast.isAnonymousFunction(
+                type: 'FunctionExpression'
+                id: null
+            )).to.be.true
+        it 'returns false for any other node type', ->
+            expect(esutils.ast.isAnonymousFunction({type: "ExpressionStatement"})).to.be.false
