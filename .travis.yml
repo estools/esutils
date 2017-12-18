@@ -1,8 +1,17 @@
 language: node_js
 node_js:
-    - "0.10"
-    - "0.11"
+  - 0.12
+  - 9
+  - 8
+  - 7
+  - 6
+  - 5
+  - 4
+  - stable
+
+# Allow Travis tests to run in containers.
+sudo: false
 
 matrix:
     allow_failures:
-        - node_js: "0.11"
+        - node_js: 0.12
