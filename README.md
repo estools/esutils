@@ -4,29 +4,29 @@ utility box for ECMAScript language tools.
 
 ### API
 
-### ast
+### `ast` 
 
-#### ast.isExpression(node)
+#### `ast.isExpression(node)` 
 
-Returns true if `node` is an Expression as defined in ECMA262 edition 5.1 section
+Returns `true` if `node` is an Expression as defined in ECMA262 edition 5.1 section
 [11](https://es5.github.io/#x11).
 
-#### ast.isStatement(node)
+#### `ast.isStatement(node)` 
 
-Returns true if `node` is a Statement as defined in ECMA262 edition 5.1 section
+Returns `true` if `node` is a Statement as defined in ECMA262 edition 5.1 section
 [12](https://es5.github.io/#x12).
 
-#### ast.isIterationStatement(node)
+#### `ast.isIterationStatement(node)` 
 
-Returns true if `node` is an IterationStatement as defined in ECMA262 edition
+Returns `true` if `node` is an IterationStatement as defined in ECMA262 edition
 5.1 section [12.6](https://es5.github.io/#x12.6).
 
-#### ast.isSourceElement(node)
+#### `ast.isSourceElement(node)` 
 
-Returns true if `node` is a SourceElement as defined in ECMA262 edition 5.1
+Returns `true` if `node` is a SourceElement as defined in ECMA262 edition 5.1
 section [14](https://es5.github.io/#x14).
 
-#### ast.trailingStatement(node)
+#### `ast.trailingStatement(node)` 
 
 Returns `Statement?` if `node` has trailing `Statement`.
 ```js
@@ -35,9 +35,9 @@ if (cond)
 ```
 When taking this `IfStatement`, returns `consequent;` statement.
 
-#### ast.isProblematicIfStatement(node)
+#### `ast.isProblematicIfStatement(node)` 
 
-Returns true if `node` is a problematic IfStatement. If `node` is a problematic `IfStatement`, `node` cannot be represented as an one on one JavaScript code.
+Returns `true` if `node` is a problematic IfStatement. If `node` is a problematic `IfStatement`, `node` cannot be represented as an one on one JavaScript code.
 ```js
 {
     type: 'IfStatement',
@@ -54,39 +54,39 @@ Returns true if `node` is a problematic IfStatement. If `node` is a problematic 
 The above node cannot be represented as a JavaScript code, since the top level `else` alternate belongs to an inner `IfStatement`.
 
 
-### code
+### `code` 
 
-#### code.isDecimalDigit(code)
+#### `code.isDecimalDigit(code)` 
 
-Return true if provided code is decimal digit.
+Return `true` if provided code is decimal digit.
 
-#### code.isHexDigit(code)
+#### `code.isHexDigit(code)` 
 
-Return true if provided code is hexadecimal digit.
+Return `true` if provided code is hexadecimal digit.
 
-#### code.isOctalDigit(code)
+#### `code.isOctalDigit(code)` 
 
-Return true if provided code is octal digit.
+Return `true` if provided code is octal digit.
 
-#### code.isWhiteSpace(code)
+#### `code.isWhiteSpace(code)` 
 
-Return true if provided code is white space. White space characters are formally defined in ECMA262.
+Return `true` if provided code is white space. White space characters are formally defined in ECMA262.
 
-#### code.isLineTerminator(code)
+#### `code.isLineTerminator(code)` 
 
-Return true if provided code is line terminator. Line terminator characters are formally defined in ECMA262.
+Return `true` if provided code is line terminator. Line terminator characters are formally defined in ECMA262.
 
-#### code.isIdentifierStart(code)
+#### `code.isIdentifierStart(code)` 
 
-Return true if provided code can be the first character of ECMA262 Identifier. They are formally defined in ECMA262.
+Return `true` if provided code can be the first character of ECMA262 Identifier. They are formally defined in ECMA262.
 
-#### code.isIdentifierPart(code)
+#### `code.isIdentifierPart(code)` 
 
-Return true if provided code can be the trailing character of ECMA262 Identifier. They are formally defined in ECMA262.
+Return `true` if provided code can be the trailing character of ECMA262 Identifier. They are formally defined in ECMA262.
 
-### keyword
+### `keyword` 
 
-#### keyword.isKeywordES5(id, strict)
+#### `keyword.isKeywordES5(id, strict)` 
 
 Returns `true` if provided identifier string is a Keyword or Future Reserved Word
 in ECMA262 edition 5.1. They are formally defined in ECMA262 sections
@@ -94,7 +94,7 @@ in ECMA262 edition 5.1. They are formally defined in ECMA262 sections
 respectively. If the `strict` flag is truthy, this function additionally checks whether
 `id` is a Keyword or Future Reserved Word under strict mode.
 
-#### keyword.isKeywordES6(id, strict)
+#### `keyword.isKeywordES6(id, strict)` 
 
 Returns `true` if provided identifier string is a Keyword or Future Reserved Word
 in ECMA262 edition 6. They are formally defined in ECMA262 sections
@@ -103,46 +103,46 @@ in ECMA262 edition 6. They are formally defined in ECMA262 sections
 respectively. If the `strict` flag is truthy, this function additionally checks whether
 `id` is a Keyword or Future Reserved Word under strict mode.
 
-#### keyword.isReservedWordES5(id, strict)
+#### `keyword.isReservedWordES5(id, strict)` 
 
 Returns `true` if provided identifier string is a Reserved Word in ECMA262 edition 5.1.
 They are formally defined in ECMA262 section [7.6.1](http://es5.github.io/#x7.6.1).
 If the `strict` flag is truthy, this function additionally checks whether `id`
 is a Reserved Word under strict mode.
 
-#### keyword.isReservedWordES6(id, strict)
+#### `keyword.isReservedWordES6(id, strict)` 
 
 Returns `true` if provided identifier string is a Reserved Word in ECMA262 edition 6.
 They are formally defined in ECMA262 section [11.6.2](http://ecma-international.org/ecma-262/6.0/#sec-reserved-words).
 If the `strict` flag is truthy, this function additionally checks whether `id`
 is a Reserved Word under strict mode.
 
-#### keyword.isRestrictedWord(id)
+#### `keyword.isRestrictedWord(id)` 
 
 Returns `true` if provided identifier string is one of `eval` or `arguments`.
 They are restricted in strict mode code throughout ECMA262 edition 5.1 and
 in ECMA262 edition 6 section [12.1.1](http://ecma-international.org/ecma-262/6.0/#sec-identifiers-static-semantics-early-errors).
 
-#### keyword.isIdentifierNameES5(id)
+#### `keyword.isIdentifierNameES5(id)` 
 
-Return true if provided identifier string is an IdentifierName as specified in
+Return `true` if provided identifier string is an IdentifierName as specified in
 ECMA262 edition 5.1 section [7.6](https://es5.github.io/#x7.6).
 
-#### keyword.isIdentifierNameES6(id)
+#### `keyword.isIdentifierNameES6(id)` 
 
-Return true if provided identifier string is an IdentifierName as specified in
+Return `true` if provided identifier string is an IdentifierName as specified in
 ECMA262 edition 6 section [11.6](http://ecma-international.org/ecma-262/6.0/#sec-names-and-keywords).
 
-#### keyword.isIdentifierES5(id, strict)
+#### `keyword.isIdentifierES5(id, strict)` 
 
-Return true if provided identifier string is an Identifier as specified in
+Return `true` if provided identifier string is an Identifier as specified in
 ECMA262 edition 5.1 section [7.6](https://es5.github.io/#x7.6). If the `strict`
 flag is truthy, this function additionally checks whether `id` is an Identifier
 under strict mode.
 
-#### keyword.isIdentifierES6(id, strict)
+#### `keyword.isIdentifierES6(id, strict)` 
 
-Return true if provided identifier string is an Identifier as specified in
+Return `true` if provided identifier string is an Identifier as specified in
 ECMA262 edition 6 section [12.1](http://ecma-international.org/ecma-262/6.0/#sec-identifiers).
 If the `strict` flag is truthy, this function additionally checks whether `id`
 is an Identifier under strict mode.
