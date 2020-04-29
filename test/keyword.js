@@ -22,7 +22,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-import * as esutils from '../';
+import * as esutils from '../src/utils.js';
 
 const KW = ['if', 'in', 'do', 'var', 'for', 'new', 'try', 'this', 'else', 'case', 'void', 'with', 'enum', 'while', 'break', 'catch', 'throw', 'const', 'class', 'super', 'return', 'typeof', 'delete', 'switch', 'export', 'import', 'default', 'finally', 'extends', 'function', 'continue', 'debugger', 'instanceof'];
 
