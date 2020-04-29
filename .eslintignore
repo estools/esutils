@@ -1,0 +1,8 @@
+node_modules
+dist
+
+!.eslintrc.js
+coverage
+
+src/es5-identifier.js
+src/es6-identifier.js
