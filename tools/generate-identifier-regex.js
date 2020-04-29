@@ -4,11 +4,14 @@
 const regenerate = require('regenerate');
 
 // Which Unicode version should be used?
-const version = '9.0.0';
+const pkg = require('../package.json');
+const dependencies = Object.keys(pkg.devDependencies);
+const unicodeDep = dependencies.find((name) => /^unicode-\d/.test(name));
+const version = unicodeDep.match(/[^\d]+(.+)$/)[1];
 
 // Set up a shorthand function to import Unicode data.
 const get = function(what) {
-    return require('unicode-' + version + '/' + what + '/code-points');
+    return require('unicode-' + version + '/' + what + '/code-points.js');
 };
 
 // Get the Unicode categories needed to construct the ES5 regex.
