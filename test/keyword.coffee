@@ -22,7 +22,6 @@
 
 'use strict'
 
-expect = require('chai').expect
 esutils = require '../'
 
 KW = [
