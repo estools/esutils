@@ -3,8 +3,11 @@
   "description": "utility box for ECMAScript language tools",
   "homepage": "https://github.com/estools/esutils",
   "bugs": "https://github.com/estools/esutils/issues",
-  "main": "dist/esutils.min.js",
-  "module": "dist/esutils.esm.min.js",
+  "main": "./dist/esutils.min.js",
+  "exports": {
+    "import": "./dist/esutils.esm.min.js",
+    "require": "./dist/esutils.min.js"
+  },
   "version": "2.0.4-dev",
   "engines": {
     "node": ">=0.10.0"
