@@ -23,11 +23,17 @@
 */
 
 
-(function () {
-    'use strict';
+import * as ast from './ast.js';
+import * as code from './code.js';
+import * as keyword from './keyword.js';
 
-    exports.ast = require('./ast');
-    exports.code = require('./code');
-    exports.keyword = require('./keyword');
-}());
+export { ast, code, keyword };
+
+/*
+// This syntax is shown on MDN, but not recognized by ESLint parser
+export * as ast from './ast.js';
+export * as code from './code.js';
+export * as keyword from './keyword.js';
+*/
+
 /* vim: set sw=4 ts=4 et tw=80 : */

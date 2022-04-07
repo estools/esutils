@@ -1,14 +1,19 @@
 // Based on https://gist.github.com/mathiasbynens/6334847 by @mathias
 'use strict';
 
+const { writeFileSync } = require('fs');
+const { join } = require('path');
 const regenerate = require('regenerate');
 
 // Which Unicode version should be used?
-const version = '9.0.0';
+const pkg = require('../package.json');
+const dependencies = Object.keys(pkg.devDependencies);
+const unicodeDep = dependencies.find((name) => /^unicode-\d/.test(name));
+const [, version] = unicodeDep.match(/\D+(.+)$/);
 
 // Set up a shorthand function to import Unicode data.
 const get = function(what) {
-    return require('unicode-' + version + '/' + what + '/code-points');
+    return require(`unicode-${version}/${what}/code-points.js`);
 };
 
 // Get the Unicode categories needed to construct the ES5 regex.
@@ -35,8 +40,8 @@ const es5regexes = (function() { // ES 5.1
         .removeRange(0x010000, 0x10FFFF) // remove astral symbols
         .removeRange(0x00, 0x7F); // remove ASCII symbols (esutils-specific)
     return {
-        'NonAsciiIdentifierStart': '/' + identifierStart + '/',
-        'NonAsciiIdentifierPart': '/' + identifierPart + '/',
+        NonAsciiIdentifierStart: `/${identifierStart}/`,
+        NonAsciiIdentifierPart: `/${identifierPart}/`,
     };
 }());
 
@@ -59,29 +64,35 @@ const es6regexes = (function() {
         .removeRange(0x00, 0x7F); // remove ASCII symbols (esutils-specific)
 
     return {
-        'NonAsciiIdentifierStart': '/' + identifierStart + '/',
-        'NonAsciiIdentifierPart': '/' + identifierPart + '/',
+        NonAsciiIdentifierStart: `/${identifierStart}/`,
+        NonAsciiIdentifierPart: `/${identifierPart}/`,
     };
 }());
 
-console.log(
-    '// ECMAScript 5.1/Unicode v%s NonAsciiIdentifierStart:\n%s\n',
-    version,
-    es5regexes.NonAsciiIdentifierStart
-);
-console.log(
-    '// ECMAScript 5.1/Unicode v%s NonAsciiIdentifierPart:\n%s\n',
-    version,
-    es5regexes.NonAsciiIdentifierPart
+writeFileSync(
+    join(__dirname, '../src/es5-identifier.js'),
+    `// DO NOT EDIT -- File auto-generated from /tools/generate-identifier-regex.js
+
+// ECMAScript 5.1/Unicode v${version} NonAsciiIdentifierStart:
+const NonAsciiIdentifierStart = ${es5regexes.NonAsciiIdentifierStart};
+
+// ECMAScript 5.1/Unicode v${version} NonAsciiIdentifierPart:
+const NonAsciiIdentifierPart = ${es5regexes.NonAsciiIdentifierPart};
+
+export { NonAsciiIdentifierStart, NonAsciiIdentifierPart };
+`
 );
 
-console.log(
-    '// ECMAScript 6/Unicode v%s NonAsciiIdentifierStart:\n%s\n',
-    version,
-    es6regexes.NonAsciiIdentifierStart
-);
-console.log(
-    '// ECMAScript 6/Unicode v%s NonAsciiIdentifierPart:\n%s',
-    version,
-    es6regexes.NonAsciiIdentifierPart
+writeFileSync(
+    join(__dirname, '../src/es6-identifier.js'),
+    `// DO NOT EDIT -- File auto-generated from /tools/generate-identifier-regex.js
+
+// ECMAScript 6/Unicode v${version} NonAsciiIdentifierStart:
+const NonAsciiIdentifierStart = ${es6regexes.NonAsciiIdentifierStart};
+
+// ECMAScript 6/Unicode v${version} NonAsciiIdentifierPart:
+const NonAsciiIdentifierPart = ${es6regexes.NonAsciiIdentifierPart};
+
+export { NonAsciiIdentifierStart, NonAsciiIdentifierPart };
+`
 );

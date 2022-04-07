@@ -22,13 +22,10 @@
   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-(function () {
-    'use strict';
+import * as code from './code.js';
 
-    var code = require('./code');
-
-    function isStrictModeReservedWordES6(id) {
-        switch (id) {
+function isStrictModeReservedWordES6(id) {
+    switch (id) {
         case 'implements':
         case 'interface':
         case 'package':
@@ -40,23 +37,15 @@
             return true;
         default:
             return false;
-        }
+    }
+}
+
+function isKeywordES6(id, strict) {
+    if (strict && isStrictModeReservedWordES6(id)) {
+        return true;
     }
 
-    function isKeywordES5(id, strict) {
-        // yield should not be treated as keyword under non-strict mode.
-        if (!strict && id === 'yield') {
-            return false;
-        }
-        return isKeywordES6(id, strict);
-    }
-
-    function isKeywordES6(id, strict) {
-        if (strict && isStrictModeReservedWordES6(id)) {
-            return true;
-        }
-
-        switch (id.length) {
+    switch (id.length) {
         case 2:
             return (id === 'if') || (id === 'in') || (id === 'do');
         case 3:
@@ -79,87 +68,91 @@
             return (id === 'instanceof');
         default:
             return false;
-        }
+    }
+}
+
+function isKeywordES5(id, strict) {
+    // yield should not be treated as keyword under non-strict mode.
+    if (!strict && id === 'yield') {
+        return false;
+    }
+    return isKeywordES6(id, strict);
+}
+
+function isReservedWordES5(id, strict) {
+    return id === 'null' || id === 'true' || id === 'false' || isKeywordES5(id, strict);
+}
+
+function isReservedWordES6(id, strict) {
+    return id === 'null' || id === 'true' || id === 'false' || isKeywordES6(id, strict);
+}
+
+function isRestrictedWord(id) {
+    return id === 'eval' || id === 'arguments';
+}
+
+function isIdentifierNameES5(id) {
+    if (id.length === 0) { return false; }
+
+    const ch = id.charCodeAt(0);
+    if (!code.isIdentifierStartES5(ch)) {
+        return false;
     }
 
-    function isReservedWordES5(id, strict) {
-        return id === 'null' || id === 'true' || id === 'false' || isKeywordES5(id, strict);
-    }
-
-    function isReservedWordES6(id, strict) {
-        return id === 'null' || id === 'true' || id === 'false' || isKeywordES6(id, strict);
-    }
-
-    function isRestrictedWord(id) {
-        return id === 'eval' || id === 'arguments';
-    }
-
-    function isIdentifierNameES5(id) {
-        var i, iz, ch;
-
-        if (id.length === 0) { return false; }
-
-        ch = id.charCodeAt(0);
-        if (!code.isIdentifierStartES5(ch)) {
+    for (let i = 1, iz = id.length; i < iz; ++i) {
+        const ch = id.charCodeAt(i);
+        if (!code.isIdentifierPartES5(ch)) {
             return false;
         }
+    }
+    return true;
+}
 
-        for (i = 1, iz = id.length; i < iz; ++i) {
-            ch = id.charCodeAt(i);
-            if (!code.isIdentifierPartES5(ch)) {
+function decodeUtf16(lead, trail) {
+    return (lead - 0xD800) * 0x400 + (trail - 0xDC00) + 0x10000;
+}
+
+function isIdentifierNameES6(id) {
+    if (id.length === 0) { return false; }
+
+    let check = code.isIdentifierStartES6;
+    for (let i = 0, iz = id.length; i < iz; ++i) {
+        let ch = id.charCodeAt(i);
+        if (0xD800 <= ch && ch <= 0xDBFF) {
+            ++i;
+            if (i >= iz) { return false; }
+            const lowCh = id.charCodeAt(i);
+            if (!(0xDC00 <= lowCh && lowCh <= 0xDFFF)) {
                 return false;
             }
+            ch = decodeUtf16(ch, lowCh);
         }
-        return true;
-    }
-
-    function decodeUtf16(lead, trail) {
-        return (lead - 0xD800) * 0x400 + (trail - 0xDC00) + 0x10000;
-    }
-
-    function isIdentifierNameES6(id) {
-        var i, iz, ch, lowCh, check;
-
-        if (id.length === 0) { return false; }
-
-        check = code.isIdentifierStartES6;
-        for (i = 0, iz = id.length; i < iz; ++i) {
-            ch = id.charCodeAt(i);
-            if (0xD800 <= ch && ch <= 0xDBFF) {
-                ++i;
-                if (i >= iz) { return false; }
-                lowCh = id.charCodeAt(i);
-                if (!(0xDC00 <= lowCh && lowCh <= 0xDFFF)) {
-                    return false;
-                }
-                ch = decodeUtf16(ch, lowCh);
-            }
-            if (!check(ch)) {
-                return false;
-            }
-            check = code.isIdentifierPartES6;
+        if (!check(ch)) {
+            return false;
         }
-        return true;
+        check = code.isIdentifierPartES6;
     }
+    return true;
+}
 
-    function isIdentifierES5(id, strict) {
-        return isIdentifierNameES5(id) && !isReservedWordES5(id, strict);
-    }
+function isIdentifierES5(id, strict) {
+    return isIdentifierNameES5(id) && !isReservedWordES5(id, strict);
+}
 
-    function isIdentifierES6(id, strict) {
-        return isIdentifierNameES6(id) && !isReservedWordES6(id, strict);
-    }
+function isIdentifierES6(id, strict) {
+    return isIdentifierNameES6(id) && !isReservedWordES6(id, strict);
+}
 
-    module.exports = {
-        isKeywordES5: isKeywordES5,
-        isKeywordES6: isKeywordES6,
-        isReservedWordES5: isReservedWordES5,
-        isReservedWordES6: isReservedWordES6,
-        isRestrictedWord: isRestrictedWord,
-        isIdentifierNameES5: isIdentifierNameES5,
-        isIdentifierNameES6: isIdentifierNameES6,
-        isIdentifierES5: isIdentifierES5,
-        isIdentifierES6: isIdentifierES6
-    };
-}());
+export {
+    isKeywordES5,
+    isKeywordES6,
+    isReservedWordES5,
+    isReservedWordES6,
+    isRestrictedWord,
+    isIdentifierNameES5,
+    isIdentifierNameES6,
+    isIdentifierES5,
+    isIdentifierES6
+};
+
 /* vim: set sw=4 ts=4 et tw=80 : */
